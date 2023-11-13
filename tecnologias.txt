@@ -1,0 +1,12 @@
+- DataBase !
+- Mapeamento Objeto Realcional !
+- Exceções Personalizadas !
+- Exception Handler !
+- Validations !
+- DTO !
+- ModelMapper !
+- Swagger !
+- Content Negotiation (json/xml) !
+- Testes Unitários (Junit/Mockito) !
+- Spring Security !
+- JWT !
