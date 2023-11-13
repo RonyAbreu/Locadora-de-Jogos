@@ -8,6 +8,7 @@ import com.ronyelison.locadora.entities.Usuario;
 import com.ronyelison.locadora.jwt.TokenService;
 import com.ronyelison.locadora.mapper.Mapeador;
 import com.ronyelison.locadora.repositories.UsuarioRepository;
+import com.ronyelison.locadora.services.exceptions.UsuarioJaExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +31,7 @@ public class UsuarioService {
     public UsuarioDTO cadastraUsuario(UsuarioDeRegistroDTO usuarioDeRegistro){
         Usuario usuarioRetornado = (Usuario) usuarioRepository.findByEmail(usuarioDeRegistro.getEmail());
         if (usuarioRetornado != null){
-            throw new RuntimeException("Esse usuário já existe!");
+            throw new UsuarioJaExisteException("Esse usuário já existe!");
         }
 
         Usuario usuarioParaSalvar = Mapeador.converteObjeto(usuarioDeRegistro, Usuario.class);
