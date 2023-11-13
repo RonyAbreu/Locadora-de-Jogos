@@ -25,6 +25,7 @@ public class Usuario implements UserDetails {
     private String nome;
     private String email;
     private String senha;
+    @Enumerated(value = EnumType.STRING)
     private Cargo cargo = Cargo.COMUM;
     private boolean contaNaoExpirada = true;
     private boolean contaNaoBloqueada = true;
