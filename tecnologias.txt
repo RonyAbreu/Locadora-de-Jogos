@@ -11,4 +11,4 @@
 - Testes Unitários (Junit/Mockito) !
 - Spring Security !
 - JWT !
-- CORS ?
+- CORS !

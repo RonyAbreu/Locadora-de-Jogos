@@ -24,3 +24,5 @@ springdoc:
     - /auth/**
   swagger-ui:
     use-root-path: true
+cors:
+  origins: http://localhost:8080,http://ronyelison.com.br,http://127.0.0.1:5500

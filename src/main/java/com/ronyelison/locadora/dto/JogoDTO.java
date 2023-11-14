@@ -26,4 +26,7 @@ public class JogoDTO extends RepresentationModel<JogoDTO> {
 
     @NotNull(message = "Preencha todos os campos")
     private Integer quantidadeEmEstoque;
+
+    @NotBlank(message = "Preencha todos os campos")
+    private String urlDaImagem;
 }

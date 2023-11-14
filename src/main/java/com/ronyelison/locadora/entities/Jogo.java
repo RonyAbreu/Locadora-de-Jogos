@@ -21,12 +21,14 @@ public class Jogo {
     private String genero;
     private Double valor;
     private Integer quantidadeEmEstoque;
+    private String urlDaImagem;
 
-    public Jogo(String nome, String genero, Double valor, Integer quantidadeEmEstoque) {
+    public Jogo(String nome, String genero, Double valor, Integer quantidadeEmEstoque, String urlDaImagem) {
         this.nome = nome;
         this.genero = genero;
         this.valor = valor;
         this.quantidadeEmEstoque = quantidadeEmEstoque;
+        this.urlDaImagem = urlDaImagem;
     }
 
     @Override
