@@ -48,7 +48,6 @@ public class UsuarioService {
         var usernamePassword = new UsernamePasswordAuthenticationToken(usuarioDeLogin.getEmail(), usuarioDeLogin.getSenha());
         authenticationManager.authenticate(usernamePassword);
 
-        String token = tokenService.gerarToken(usuarioDeLogin);
-        return new TokenDTO(token);
+        return tokenService.criarToken(usuarioDeLogin);
     }
 }

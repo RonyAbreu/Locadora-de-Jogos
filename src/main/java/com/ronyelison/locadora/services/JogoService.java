@@ -75,23 +75,23 @@ public class JogoService {
         jogo.setQuantidadeEmEstoque(jogoDTO.getQuantidadeEmEstoque());
     }
 
-    public List<Jogo> retornarTodosOsJogos(){
+    public List<JogoDTO> retornarTodosOsJogos(){
         List<Jogo> listaDeJogos = repository.findAll();
 
         if (listaDeJogos.isEmpty()){
             throw new JogoNaoExisteException("Lista vazia");
         }
 
-        return listaDeJogos;
+        return Mapeador.converteListaDeObjetos(listaDeJogos,JogoDTO.class);
     }
 
-    public Jogo retornaJogoPeloNome(String nome){
-        Optional<Jogo> jogoRetornado = repository.findByNome(nome);
+    public List<Jogo> retornaJogosPeloNome(String nome){
+        List<Jogo> listaDeJogos = repository.findByNomeContainingIgnoreCase(nome);
 
-        if (jogoRetornado.isEmpty()){
-            throw new JogoNaoExisteException("Jogo não existe");
+        if (listaDeJogos.isEmpty()){
+            throw new JogoNaoExisteException("Lista de jogos está vazia!");
         }
 
-        return jogoRetornado.get();
+        return listaDeJogos;
     }
 }
