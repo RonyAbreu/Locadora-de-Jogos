@@ -33,12 +33,12 @@ public class JogoService {
             throw new JogoJaExisteException("Jogo já existe!");
         }
 
-        adicionaMetodoRetornaJogoPeloId(jogo);
-
         Jogo jogoParaSalvar = Mapeador.converteObjeto(jogo, Jogo.class);
-        repository.save(jogoParaSalvar);
 
-        return Mapeador.converteObjeto(jogoParaSalvar,JogoDTO.class);
+        JogoDTO jogoDTO = Mapeador.converteObjeto(repository.save(jogoParaSalvar),JogoDTO.class);
+        adicionaMetodoRetornaJogoPeloId(jogoDTO);
+
+        return jogoDTO;
     }
 
     public JogoDTO retornaJogoPeloId(Long id){
@@ -74,7 +74,10 @@ public class JogoService {
         atualizarDados(jogoRetornado.get(),jogoDTO);
         repository.save(jogoRetornado.get());
 
-        return Mapeador.converteObjeto(jogoRetornado.get(),JogoDTO.class);
+        JogoDTO jogoDtoHateoas = Mapeador.converteObjeto(jogoRetornado.get(),JogoDTO.class);
+        adicionaMetodoRetornaJogoPeloId(jogoDtoHateoas);
+
+        return jogoDtoHateoas;
     }
 
     private void atualizarDados(Jogo jogo, JogoDTO jogoDTO) {
@@ -85,20 +88,29 @@ public class JogoService {
     }
 
     public List<JogoDTO> retornarTodosOsJogos(){
-        List<Jogo> listaDeJogos = repository.findAll();
+        List<JogoDTO> listaDeJogos = Mapeador.converteListaDeObjetos(repository.findAll(),JogoDTO.class);
 
         if (listaDeJogos.isEmpty()){
             throw new JogoNaoExisteException("Lista vazia");
         }
 
-        return Mapeador.converteListaDeObjetos(listaDeJogos,JogoDTO.class);
+        for (JogoDTO jogoDTO : listaDeJogos){
+            adicionaMetodoRetornaJogoPeloId(jogoDTO);
+        }
+
+        return listaDeJogos;
     }
 
-    public List<Jogo> retornaJogosPeloNome(String nome){
-        List<Jogo> listaDeJogos = repository.findByNomeContainingIgnoreCase(nome);
+    public List<JogoDTO> retornaJogosPeloNome(String nome){
+        List<JogoDTO> listaDeJogos = Mapeador
+                .converteListaDeObjetos(repository.findByNomeContainingIgnoreCase(nome), JogoDTO.class);
 
         if (listaDeJogos.isEmpty()){
             throw new JogoNaoExisteException("Lista de jogos está vazia!");
+        }
+
+        for (JogoDTO jogoDTO : listaDeJogos){
+            adicionaMetodoRetornaJogoPeloId(jogoDTO);
         }
 
         return listaDeJogos;

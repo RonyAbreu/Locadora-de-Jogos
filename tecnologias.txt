@@ -1,5 +1,5 @@
 - DataBase !
-- Mapeamento Objeto Realcional !
+- Mapeamento Objeto Relacional !
 - Exceções Personalizadas !
 - Exception Handler !
 - Validations !
@@ -7,6 +7,8 @@
 - ModelMapper !
 - Swagger !
 - Content Negotiation (json/xml) !
+- Hateoas !
 - Testes Unitários (Junit/Mockito) !
 - Spring Security !
 - JWT !
+- CORS ?

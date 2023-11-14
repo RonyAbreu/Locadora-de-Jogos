@@ -45,7 +45,7 @@ public class JogoController {
 
     @Operation(summary = "Endpoint para retornar todos os jogos", description = "Endpoint para retornar todos os jogos", tags = "Jogo",
             responses = {
-                    @ApiResponse(description = "Sucesso", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Jogo.class)))),
+                    @ApiResponse(description = "Sucesso", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = JogoDTO.class)))),
                     @ApiResponse(description = "Não encontrado", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Erro de servidor", responseCode = "500", content = @Content),
                     @ApiResponse(description = "Proibido acesso", responseCode = "403", content = @Content)
@@ -99,14 +99,14 @@ public class JogoController {
 
     @Operation(summary = "Endpoint para retornar jogos pelo nome", description = "Endpoint para retornar jogos pelo nome", tags = "Jogo",
             responses = {
-                    @ApiResponse(description = "Sucesso", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Jogo.class)))),
+                    @ApiResponse(description = "Sucesso", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = JogoDTO.class)))),
                     @ApiResponse(description = "Não encontrado", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Erro de usuário", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Erro de servidor", responseCode = "500", content = @Content),
                     @ApiResponse(description = "Proibido acesso", responseCode = "403", content = @Content)
             })
     @GetMapping(value = "/nome", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<List<Jogo>> retornaJogosPeloNome(@RequestParam(value = "nome", defaultValue = "n") String nome){
+    public ResponseEntity<List<JogoDTO>> retornaJogosPeloNome(@RequestParam(value = "nome", defaultValue = "n") String nome){
         var jogoRetornado = service.retornaJogosPeloNome(nome);
         return ResponseEntity.ok(jogoRetornado);
     }
