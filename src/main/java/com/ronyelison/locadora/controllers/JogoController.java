@@ -58,13 +58,13 @@ public class JogoController {
 
     @Operation(summary = "Endpoint para retornar um jogo", description = "Endpoint para retornar um jogo", tags = "Jogo",
             responses = {
-                    @ApiResponse(description = "Sucesso", responseCode = "200", content = @Content(schema = @Schema(implementation = Jogo.class))),
+                    @ApiResponse(description = "Sucesso", responseCode = "200", content = @Content(schema = @Schema(implementation = JogoDTO.class))),
                     @ApiResponse(description = "Não encontrado", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Erro de servidor", responseCode = "500", content = @Content),
                     @ApiResponse(description = "Proibido acesso", responseCode = "403", content = @Content)
             })
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Jogo> retornaJogoPeloId(@PathVariable Long id){
+    public ResponseEntity<JogoDTO> retornaJogoPeloId(@PathVariable Long id){
         var jogoRetornado = service.retornaJogoPeloId(id);
         return ResponseEntity.ok(jogoRetornado);
     }

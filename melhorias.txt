@@ -1,0 +1,1 @@
+- ajeitar o tratamento de exceção do token

@@ -1,5 +1,6 @@
 package com.ronyelison.locadora.services;
 
+import com.ronyelison.locadora.controllers.JogoController;
 import com.ronyelison.locadora.dto.JogoDTO;
 import com.ronyelison.locadora.entities.Jogo;
 import com.ronyelison.locadora.mapper.Mapeador;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Service
 public class JogoService {
 
@@ -22,27 +26,32 @@ public class JogoService {
         this.repository = repository;
     }
 
-    public JogoDTO adicionarJogo(JogoDTO jogoDTO){
-        Optional<Jogo> jogoRetornado = repository.findByNome(jogoDTO.getNome());
+    public JogoDTO adicionarJogo(JogoDTO jogo){
+        Optional<Jogo> jogoRetornado = repository.findByNome(jogo.getNome());
 
         if (jogoRetornado.isPresent()){
             throw new JogoJaExisteException("Jogo já existe!");
         }
 
-        Jogo jogoParaSalvar = Mapeador.converteObjeto(jogoDTO, Jogo.class);
+        adicionaMetodoRetornaJogoPeloId(jogo);
+
+        Jogo jogoParaSalvar = Mapeador.converteObjeto(jogo, Jogo.class);
         repository.save(jogoParaSalvar);
 
         return Mapeador.converteObjeto(jogoParaSalvar,JogoDTO.class);
     }
 
-    public Jogo retornaJogoPeloId(Long id){
+    public JogoDTO retornaJogoPeloId(Long id){
         Optional<Jogo> jogoRetornado = repository.findById(id);
 
         if (jogoRetornado.isEmpty()){
             throw new JogoNaoExisteException("Jogo não existe");
         }
 
-        return jogoRetornado.get();
+        JogoDTO jogoDTO = Mapeador.converteObjeto(jogoRetornado.get(),JogoDTO.class);
+        adicionaMetodoRetornaJogoPeloId(jogoDTO);
+
+        return jogoDTO;
     }
 
     public void removeJogoPeloId(Long id){
@@ -93,5 +102,12 @@ public class JogoService {
         }
 
         return listaDeJogos;
+    }
+
+    private void adicionaMetodoRetornaJogoPeloId(JogoDTO jogoDTO){
+        jogoDTO.add(
+                linkTo(methodOn(JogoController.class)
+                        .retornaJogoPeloId(jogoDTO.getId()))
+                        .withSelfRel());
     }
 }

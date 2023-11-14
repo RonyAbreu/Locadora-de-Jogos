@@ -3,14 +3,16 @@ package com.ronyelison.locadora.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class JogoDTO {
+@Getter
+@Setter
+public class JogoDTO extends RepresentationModel<JogoDTO> {
+    private Long id;
+
     @NotBlank(message = "Preencha todos os campos")
     @Size(min = 2, max = 30, message = "Número de caracteres do nome é inválido")
     private String nome;

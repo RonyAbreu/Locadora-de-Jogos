@@ -1,7 +1,6 @@
 package com.ronyelison.locadora.controllers.exceptions;
 
-import com.ronyelison.locadora.services.exceptions.JogoJaExisteException;
-import com.ronyelison.locadora.services.exceptions.JogoNaoExisteException;
+import com.ronyelison.locadora.services.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +38,26 @@ public class ErroControllerHandler {
         }
 
         return ResponseEntity.status(status).body(respostaDeValidacao);
+    }
+
+    @ExceptionHandler(UsuarioJaExisteException.class)
+    public ResponseEntity<RespostaDeErro> usuarioJaExisteErro(UsuarioJaExisteException exception, HttpServletRequest request){
+        HttpStatus status = HttpStatus.CONFLICT;
+        RespostaDeErro respostaDeErro = new RespostaDeErro(Instant.now(),status.value(),exception.getMessage(),request.getRequestURI());
+        return ResponseEntity.status(status).body(respostaDeErro);
+    }
+
+    @ExceptionHandler(UsuarioNaoExisteException.class)
+    public ResponseEntity<RespostaDeErro> usuarioNaoExisteErro(UsuarioNaoExisteException exception, HttpServletRequest request){
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        RespostaDeErro respostaDeErro = new RespostaDeErro(Instant.now(),status.value(),exception.getMessage(),request.getRequestURI());
+        return ResponseEntity.status(status).body(respostaDeErro);
+    }
+
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<RespostaDeErro> tokenInvalidoErro(TokenException exception, HttpServletRequest request){
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        RespostaDeErro respostaDeErro = new RespostaDeErro(Instant.now(),status.value(),exception.getMessage(),request.getRequestURI());
+        return ResponseEntity.status(status).body(respostaDeErro);
     }
 }

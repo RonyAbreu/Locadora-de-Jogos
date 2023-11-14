@@ -3,6 +3,7 @@ package com.ronyelison.locadora.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.ronyelison.locadora.dto.usuario.TokenDTO;
 import com.ronyelison.locadora.dto.usuario.UsuarioDeLogin;
@@ -21,7 +22,6 @@ public class TokenService {
     @Value("${security.jwt.secret-key:secret}")
     private String secretKey;
     private Algorithm algorithm = null;
-    private final Long TRES_HORAS_EM_SEGUNDOS = 10800L;
 
     @PostConstruct
     protected void init(){
@@ -30,7 +30,7 @@ public class TokenService {
     }
 
     public TokenDTO criarToken(UsuarioDeLogin usuarioDeLogin){
-        Instant criadoEm = LocalDateTime.now().toInstant(ZoneOffset.of("-03:00")).minusSeconds(TRES_HORAS_EM_SEGUNDOS);
+        Instant criadoEm = LocalDateTime.now().toInstant(ZoneOffset.of("-03:00"));
         Instant validoAte = tempoDoToken();
 
         var token = gerarToken(usuarioDeLogin,criadoEm,validoAte);
@@ -64,11 +64,11 @@ public class TokenService {
     }
 
     private Instant tempoDoToken() {
-        return LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.of("-03:00")).minusSeconds(TRES_HORAS_EM_SEGUNDOS);
+        return LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.of("-03:00"));
     }
 
     private Instant tempoDoRefreshToken() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00")).minusSeconds(TRES_HORAS_EM_SEGUNDOS);
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 
     public String validaTokenPeloSujeito(String token){
@@ -77,8 +77,8 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
-        }catch (JWTVerificationException e){
-            throw new TokenException("Token inválido ou expirado");
+        }catch (JWTDecodeException e){
+            throw new TokenException("Token inválido ou expirado!");
         }
     }
 }
