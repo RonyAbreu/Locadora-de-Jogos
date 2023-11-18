@@ -4,21 +4,17 @@ import com.ronyelison.locadora.dto.usuario.TokenDTO;
 import com.ronyelison.locadora.dto.usuario.UsuarioDTO;
 import com.ronyelison.locadora.dto.usuario.UsuarioDeLogin;
 import com.ronyelison.locadora.dto.usuario.UsuarioDeRegistroDTO;
-import com.ronyelison.locadora.entities.Jogo;
-import com.ronyelison.locadora.entities.Usuario;
 import com.ronyelison.locadora.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.print.attribute.standard.Media;
 
 @RestController
 @RequestMapping("/usuario")
@@ -40,7 +36,7 @@ public class UsuarioController {
             })
     @PostMapping(value = "/registro",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<UsuarioDTO> cadastraUsuario(@RequestBody UsuarioDeRegistroDTO usuarioDeRegistro){
+    public ResponseEntity<UsuarioDTO> cadastraUsuario(@RequestBody @Valid UsuarioDeRegistroDTO usuarioDeRegistro){
         var usuario = service.cadastraUsuario(usuarioDeRegistro);
         return ResponseEntity.ok(usuario);
     }
@@ -53,7 +49,7 @@ public class UsuarioController {
             })
     @PostMapping(value = "/login",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<TokenDTO> login(@RequestBody UsuarioDeLogin usuarioDeLogin){
+    public ResponseEntity<TokenDTO> login(@RequestBody @Valid UsuarioDeLogin usuarioDeLogin){
         var token = service.login(usuarioDeLogin);
         return ResponseEntity.ok(token);
     }
