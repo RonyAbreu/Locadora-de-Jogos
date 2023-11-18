@@ -1,0 +1,23 @@
+server:
+  port: 8888
+security:
+  jwt:
+    secret-key: r0n1
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  output:
+    ansi:
+      enabled: always
+springdoc:
+  pathsToMatch:
+    - /api/v1/**
+    - /usuario/**
+    - /auth/**
+  swagger-ui:
+    use-root-path: true
+cors:
+  origins: http://localhost:8080,http://ronyelison.com.br,http://127.0.0.1:5500

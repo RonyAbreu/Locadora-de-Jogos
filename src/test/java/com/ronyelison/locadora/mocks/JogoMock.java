@@ -16,15 +16,18 @@ public class JogoMock {
         jogo.setGenero("Gênero " + numero);
         jogo.setValor(10D);
         jogo.setQuantidadeEmEstoque(numero);
+        jogo.setUrlDaImagem("Url " + numero);
         return jogo;
     }
 
     public JogoDTO mockJogoDto(Integer numero){
         JogoDTO jogoDTO = new JogoDTO();
-        jogoDTO.setNome("JogoDTO " + numero);
+        jogoDTO.setId(numero.longValue());
+        jogoDTO.setNome("Jogo " + numero);
         jogoDTO.setGenero("Gênero " + numero);
         jogoDTO.setValor(10D);
         jogoDTO.setQuantidadeEmEstoque(numero);
+        jogoDTO.setUrlDaImagem("Url " + numero);
         return jogoDTO;
     }
 

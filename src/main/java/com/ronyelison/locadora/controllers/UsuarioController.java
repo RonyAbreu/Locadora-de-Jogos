@@ -16,10 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.print.attribute.standard.Media;
 
@@ -58,6 +55,19 @@ public class UsuarioController {
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<TokenDTO> login(@RequestBody UsuarioDeLogin usuarioDeLogin){
         var token = service.login(usuarioDeLogin);
+        return ResponseEntity.ok(token);
+    }
+
+    @Operation(summary = "Endpoint para fazer atualizar token", description = "Endpoint para fazer atualizar token", tags = "Usuário",
+            responses = {
+                    @ApiResponse(description = "Sucesso", responseCode = "200", content = @Content(schema = @Schema(implementation = TokenDTO.class))),
+                    @ApiResponse(description = "Não encontrado", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Erro de servidor", responseCode = "500", content = @Content),
+            })
+    @PutMapping(value = "/refresh/{email}",
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<TokenDTO> atualizaToken(@PathVariable String email, @RequestHeader("Authorization") String refreshToken){
+        var token = service.atualizaToken(email, refreshToken);
         return ResponseEntity.ok(token);
     }
 }

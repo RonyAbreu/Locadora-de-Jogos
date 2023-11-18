@@ -8,12 +8,17 @@ import com.ronyelison.locadora.entities.Usuario;
 import com.ronyelison.locadora.jwt.TokenService;
 import com.ronyelison.locadora.mapper.Mapeador;
 import com.ronyelison.locadora.repositories.UsuarioRepository;
+import com.ronyelison.locadora.services.exceptions.LoginInvalidoException;
 import com.ronyelison.locadora.services.exceptions.UsuarioJaExisteException;
+import com.ronyelison.locadora.services.exceptions.UsuarioNaoExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.security.auth.login.LoginException;
 
 @Service
 public class UsuarioService {
@@ -44,10 +49,26 @@ public class UsuarioService {
         return Mapeador.converteObjeto(usuarioParaSalvar,UsuarioDTO.class);
     }
 
-    public TokenDTO login(UsuarioDeLogin usuarioDeLogin) {
+    public TokenDTO login(UsuarioDeLogin usuarioDeLogin){
         var usernamePassword = new UsernamePasswordAuthenticationToken(usuarioDeLogin.getEmail(), usuarioDeLogin.getSenha());
         authenticationManager.authenticate(usernamePassword);
 
-        return tokenService.criarToken(usuarioDeLogin);
+        var usuario = usuarioRepository.findByEmail(usuarioDeLogin.getEmail());
+
+        if (usuario == null){
+            throw new LoginInvalidoException("Login inválido!");
+        }
+
+        return tokenService.criarToken(usuarioDeLogin.getEmail());
+    }
+
+    public TokenDTO atualizaToken(String email, String refreshToken){
+        var usuario = usuarioRepository.findByEmail(email);
+
+        if (usuario == null){
+            throw new UsuarioNaoExisteException("Email inválido!");
+        }
+
+        return tokenService.refreshToken(refreshToken);
     }
 }

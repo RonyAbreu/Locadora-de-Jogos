@@ -48,7 +48,7 @@ class JogoServiceTest {
         assertNotNull(resultado.getValor());
         assertNotNull(resultado.getQuantidadeEmEstoque());
 
-        assertEquals("JogoDTO 1", resultado.getNome());
+        assertEquals("Jogo 1", resultado.getNome());
         assertEquals("Gênero 1", resultado.getGenero());
         assertEquals(10, resultado.getValor());
         assertEquals(1, resultado.getQuantidadeEmEstoque());

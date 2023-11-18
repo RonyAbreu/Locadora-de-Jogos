@@ -1,5 +1,6 @@
 package com.ronyelison.locadora.jwt;
 
+import com.ronyelison.locadora.entities.Usuario;
 import com.ronyelison.locadora.repositories.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
