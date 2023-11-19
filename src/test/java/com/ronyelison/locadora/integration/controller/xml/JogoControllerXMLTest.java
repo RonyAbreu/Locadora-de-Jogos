@@ -1,4 +1,4 @@
-package com.ronyelison.locadora.integration.controller;
+package com.ronyelison.locadora.integration.controller.xml;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class JogoControllerJsonTest extends AbstractIntegrationTest {
+public class JogoControllerXMLTest extends AbstractIntegrationTest {
     private static RequestSpecification specification;
     private static ObjectMapper objectMapper;
     private static JogoTestDTO jogoTestDTO;
@@ -41,7 +41,7 @@ public class JogoControllerJsonTest extends AbstractIntegrationTest {
 
         var token = given()
                 .basePath("/usuario/login")
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .contentType(TestConfig.CONTENT_TYPE_XML)
                 .body(usuarioLogin)
                 .when()
                 .post()
@@ -69,7 +69,7 @@ public class JogoControllerJsonTest extends AbstractIntegrationTest {
 
         var content = given()
                 .spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .contentType(TestConfig.CONTENT_TYPE_XML)
                 .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_RONYELISON)
                 .body(jogoTestDTO)
                 .when()
@@ -107,7 +107,7 @@ public class JogoControllerJsonTest extends AbstractIntegrationTest {
 
         var content = given()
                 .spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .contentType(TestConfig.CONTENT_TYPE_XML)
                 .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_FALSE)
                 .body(jogoTestDTO)
                 .when()
@@ -130,7 +130,7 @@ public class JogoControllerJsonTest extends AbstractIntegrationTest {
 
         var content = given()
                 .spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .contentType(TestConfig.CONTENT_TYPE_XML)
                 .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_RONYELISON)
                 .pathParam("id",jogoTestDTO.getId())
                 .when()
@@ -167,7 +167,7 @@ public class JogoControllerJsonTest extends AbstractIntegrationTest {
 
         var content = given()
                 .spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .contentType(TestConfig.CONTENT_TYPE_XML)
                 .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_FALSE)
                 .pathParam("id",jogoTestDTO.getId())
                 .when()

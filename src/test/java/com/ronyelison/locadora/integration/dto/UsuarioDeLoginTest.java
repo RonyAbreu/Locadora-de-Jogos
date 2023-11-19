@@ -3,6 +3,7 @@ package com.ronyelison.locadora.integration.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@XmlRootElement
 public class UsuarioDeLoginTest {
 
     @NotBlank(message = "Preencha todos os campos")

@@ -110,4 +110,17 @@ public class JogoController {
         var jogoRetornado = service.retornaJogosPeloNome(nome);
         return ResponseEntity.ok(jogoRetornado);
     }
+
+    @Operation(summary = "Endpoint para desativar um jogo", description = "Endpoint para desativar um jogo", tags = "Jogo",
+            responses = {
+                    @ApiResponse(description = "Sucesso", responseCode = "200", content = @Content(schema = @Schema(implementation = JogoDTO.class))),
+                    @ApiResponse(description = "Não encontrado", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Erro de servidor", responseCode = "500", content = @Content),
+                    @ApiResponse(description = "Proibido acesso", responseCode = "403", content = @Content)
+            })
+    @PatchMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<JogoDTO> desativaJogoPeloId(@PathVariable Long id){
+        var jogoRetornado = service.desativaJogo(id);
+        return ResponseEntity.ok(jogoRetornado);
+    }
 }

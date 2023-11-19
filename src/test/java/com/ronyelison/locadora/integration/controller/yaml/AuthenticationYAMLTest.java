@@ -1,4 +1,4 @@
-package com.ronyelison.locadora.integration.controller;
+package com.ronyelison.locadora.integration.controller.yaml;
 
 import com.ronyelison.locadora.config.TestConfig;
 import com.ronyelison.locadora.dto.usuario.TokenDTO;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AuthenticationJsonTest extends AbstractIntegrationTest {
+public class AuthenticationYAMLTest extends AbstractIntegrationTest {
     private static TokenDTO tokenDTO;
 
     @Test
@@ -26,7 +26,7 @@ public class AuthenticationJsonTest extends AbstractIntegrationTest {
         tokenDTO = given()
                 .basePath("/usuario/login")
                 .port(TestConfig.SERVER_PORT)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .contentType(TestConfig.CONTENT_TYPE_YML)
                 .body(usuarioDeLogin)
                 .when()
                 .post()
@@ -49,7 +49,7 @@ public class AuthenticationJsonTest extends AbstractIntegrationTest {
         var newtokenDTO = given()
                 .basePath("/usuario/refresh")
                 .port(TestConfig.SERVER_PORT)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .contentType(TestConfig.CONTENT_TYPE_YML)
                 .pathParam("email", usuarioDeLogin.getEmail())
                 .header(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + tokenDTO.getRefreshToken())
                 .when()

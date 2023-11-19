@@ -22,6 +22,7 @@ public class Jogo {
     private Double valor;
     private Integer quantidadeEmEstoque;
     private String urlDaImagem;
+    private Boolean ativo;
 
     public Jogo(String nome, String genero, Double valor, Integer quantidadeEmEstoque, String urlDaImagem) {
         this.nome = nome;
@@ -29,6 +30,7 @@ public class Jogo {
         this.valor = valor;
         this.quantidadeEmEstoque = quantidadeEmEstoque;
         this.urlDaImagem = urlDaImagem;
+        this.ativo = true;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ronyelison.locadora.integration.dto;
 
 
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @AllArgsConstructor
+@XmlRootElement
 public class JogoTestDTO{
     private Long id;
     private String nome;
@@ -17,6 +19,7 @@ public class JogoTestDTO{
     private Integer quantidadeEmEstoque;
     private Double valor;
     private String urlDaImagem;
+    private Boolean ativo;
 
     public JogoTestDTO(){
 
@@ -28,6 +31,7 @@ public class JogoTestDTO{
         this.quantidadeEmEstoque = quantidadeEmEstoque;
         this.valor = valor;
         this.urlDaImagem = urlDaImagem;
+        this.ativo = true;
     }
 
     @Override

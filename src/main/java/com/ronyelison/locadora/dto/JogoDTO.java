@@ -29,4 +29,6 @@ public class JogoDTO extends RepresentationModel<JogoDTO> {
 
     @NotBlank(message = "Preencha todos os campos")
     private String urlDaImagem;
+
+    private Boolean ativo = true;
 }

@@ -9,6 +9,7 @@ import com.ronyelison.locadora.services.exceptions.JogoJaExisteException;
 import com.ronyelison.locadora.services.exceptions.JogoNaoExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -122,4 +123,19 @@ public class JogoService {
                         .retornaJogoPeloId(jogoDTO.getId()))
                         .withSelfRel());
     }
+
+
+    @Transactional
+    public JogoDTO desativaJogo(Long id){
+        Optional<Jogo> jogoRetornado = repository.findById(id);
+
+        if (jogoRetornado.isEmpty()){
+            throw new JogoNaoExisteException("Jogo não existe");
+        }
+
+        repository.desativaJogo(id);
+
+        return Mapeador.converteObjeto(jogoRetornado.get(), JogoDTO.class);
+    }
+
 }

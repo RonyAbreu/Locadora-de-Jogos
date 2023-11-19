@@ -1,6 +1,7 @@
 package com.ronyelison.locadora.integration.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @Getter
 @Setter
+@XmlRootElement
 public class TokenTestDTO {
     private String token;
     private String refreshToken;
