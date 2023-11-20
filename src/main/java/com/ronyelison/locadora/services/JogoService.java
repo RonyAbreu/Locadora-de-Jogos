@@ -8,6 +8,12 @@ import com.ronyelison.locadora.repositories.JogoRepository;
 import com.ronyelison.locadora.services.exceptions.JogoJaExisteException;
 import com.ronyelison.locadora.services.exceptions.JogoNaoExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +27,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class JogoService {
 
     private JogoRepository repository;
+    private PagedResourcesAssembler<JogoDTO> assembler;
 
     @Autowired
-    public JogoService(JogoRepository repository) {
+    public JogoService(JogoRepository repository, PagedResourcesAssembler assembler) {
         this.repository = repository;
+        this.assembler = assembler;
     }
 
     public JogoDTO adicionarJogo(JogoDTO jogo){
@@ -88,33 +96,35 @@ public class JogoService {
         jogo.setQuantidadeEmEstoque(jogoDTO.getQuantidadeEmEstoque());
     }
 
-    public List<JogoDTO> retornarTodosOsJogos(){
-        List<JogoDTO> listaDeJogos = Mapeador.converteListaDeObjetos(repository.findAll(),JogoDTO.class);
+    public PagedModel<EntityModel<JogoDTO>> retornarTodosOsJogos(Pageable pageable){
+        Page<Jogo> paginaDeJogos = repository.findAll(pageable);
 
-        if (listaDeJogos.isEmpty()){
-            throw new JogoNaoExisteException("Lista vazia");
+        if (paginaDeJogos.isEmpty()){
+            throw new JogoNaoExisteException("Jogos ainda não foram cadastrados!");
         }
 
-        for (JogoDTO jogoDTO : listaDeJogos){
-            adicionaMetodoRetornaJogoPeloId(jogoDTO);
-        }
+        Page<JogoDTO> paginaDeJogosDto = paginaDeJogos.map(p -> Mapeador.converteObjeto(p, JogoDTO.class));
 
-        return listaDeJogos;
+        paginaDeJogosDto.forEach(this::adicionaMetodoRetornaJogoPeloId);
+
+        Link link = linkTo(methodOn(JogoController.class)
+                .retornaTodosOsJogos(pageable.getPageNumber(), pageable.getPageSize(),"asc")).withSelfRel();
+        return assembler.toModel(paginaDeJogosDto,link);
     }
 
-    public List<JogoDTO> retornaJogosPeloNome(String nome){
-        List<JogoDTO> listaDeJogos = Mapeador
-                .converteListaDeObjetos(repository.findByNomeContainingIgnoreCase(nome), JogoDTO.class);
+    public PagedModel<EntityModel<JogoDTO>> retornaJogosPeloNome(String nome, Pageable pageable){
+        Page<Jogo> paginaDeJogos = repository.findByNomeContainingIgnoreCase(nome, pageable);
 
-        if (listaDeJogos.isEmpty()){
-            throw new JogoNaoExisteException("Lista de jogos está vazia!");
+        if (paginaDeJogos.isEmpty()){
+            throw new JogoNaoExisteException("Não existe nenhum jogo com esse nome!");
         }
 
-        for (JogoDTO jogoDTO : listaDeJogos){
-            adicionaMetodoRetornaJogoPeloId(jogoDTO);
-        }
+        Page<JogoDTO> paginaDeJogosDto = paginaDeJogos.map(jogo -> Mapeador.converteObjeto(jogo, JogoDTO.class));
+        paginaDeJogosDto.forEach(this::adicionaMetodoRetornaJogoPeloId);
 
-        return listaDeJogos;
+        Link link = linkTo(methodOn(JogoController.class)
+                .retornaJogosPeloNome(nome,pageable.getPageNumber(),pageable.getPageSize(), "asc")).withSelfRel();
+        return assembler.toModel(paginaDeJogosDto, link);
     }
 
     private void adicionaMetodoRetornaJogoPeloId(JogoDTO jogoDTO){

@@ -1,7 +1,6 @@
 package com.ronyelison.locadora.controllers;
 
 import com.ronyelison.locadora.dto.JogoDTO;
-import com.ronyelison.locadora.entities.Jogo;
 import com.ronyelison.locadora.services.JogoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -11,11 +10,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/jogos")
@@ -51,8 +53,14 @@ public class JogoController {
                     @ApiResponse(description = "Proibido acesso", responseCode = "403", content = @Content)
             })
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<List<JogoDTO>> retornaTodosOsJogos(){
-        var listaDeJogos = service.retornarTodosOsJogos();
+
+
+    public ResponseEntity<PagedModel<EntityModel<JogoDTO>>> retornaTodosOsJogos(@RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
+                                                                               @RequestParam(value = "limite", defaultValue = "12") Integer limite,
+                                                                               @RequestParam(value = "direcao", defaultValue = "asc") String direcao){
+        var direcaoDaPagina = "desc".equalsIgnoreCase(direcao) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(pagina, limite, Sort.by(direcaoDaPagina, "nome"));
+        var listaDeJogos = service.retornarTodosOsJogos(pageable);
         return ResponseEntity.ok(listaDeJogos);
     }
 
@@ -105,9 +113,12 @@ public class JogoController {
                     @ApiResponse(description = "Erro de servidor", responseCode = "500", content = @Content),
                     @ApiResponse(description = "Proibido acesso", responseCode = "403", content = @Content)
             })
-    @GetMapping(value = "/nome", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<List<JogoDTO>> retornaJogosPeloNome(@RequestParam(value = "nome", defaultValue = "n") String nome){
-        var jogoRetornado = service.retornaJogosPeloNome(nome);
+    @GetMapping(value = "/nome/{nomeJogo}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<PagedModel<EntityModel<JogoDTO>>> retornaJogosPeloNome(@PathVariable String nomeJogo, @RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
+                                                              @RequestParam(value = "limite", defaultValue = "12") Integer limite, @RequestParam(value = "ordem", defaultValue = "asc") String ordem){
+        var ordenacao = "desc".equalsIgnoreCase(ordem) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(pagina,limite, Sort.by(ordenacao,"nome"));
+        var jogoRetornado = service.retornaJogosPeloNome(nomeJogo,pageable);
         return ResponseEntity.ok(jogoRetornado);
     }
 

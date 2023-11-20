@@ -2,6 +2,7 @@ package com.ronyelison.locadora.jwt;
 
 import com.ronyelison.locadora.entities.Usuario;
 import com.ronyelison.locadora.repositories.UsuarioRepository;
+import com.ronyelison.locadora.services.exceptions.TokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
