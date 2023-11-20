@@ -11,6 +11,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,8 +57,14 @@ public class JogoController {
                     @ApiResponse(description = "Proibido acesso", responseCode = "403", content = @Content)
             })
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<List<JogoDTO>> retornaTodosOsJogos(){
-        var listaDeJogos = service.retornarTodosOsJogos();
+
+
+    public ResponseEntity<PagedModel<EntityModel<JogoDTO>>> retornaTodosOsJogos(@RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
+                                                                               @RequestParam(value = "limite", defaultValue = "12") Integer limite,
+                                                                               @RequestParam(value = "direcao", defaultValue = "asc") String direcao){
+        var direcaoDaPagina = "desc".equalsIgnoreCase(direcao) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(pagina, limite, Sort.by(direcaoDaPagina, "nome"));
+        var listaDeJogos = service.retornarTodosOsJogos(pageable);
         return ResponseEntity.ok(listaDeJogos);
     }
 
