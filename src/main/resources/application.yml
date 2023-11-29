@@ -17,6 +17,12 @@ spring:
   output:
     ansi:
       enabled: always
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
 springdoc:
   pathsToMatch:
     - /api/v1/**
@@ -26,3 +32,7 @@ springdoc:
     use-root-path: true
 cors:
   origins: http://localhost:8080,http://ronyelison.com.br,http://127.0.0.1:5500
+file:
+  upload-dir: /Users/ronye/Desktop/Java/UploadDir
+
+

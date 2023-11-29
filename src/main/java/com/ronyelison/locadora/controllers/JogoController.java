@@ -1,7 +1,6 @@
 package com.ronyelison.locadora.controllers;
 
 import com.ronyelison.locadora.dto.JogoDTO;
-import com.ronyelison.locadora.entities.Jogo;
 import com.ronyelison.locadora.services.JogoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -11,12 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,8 +18,6 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/jogos")
@@ -62,8 +53,6 @@ public class JogoController {
                     @ApiResponse(description = "Proibido acesso", responseCode = "403", content = @Content)
             })
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-
-
     public ResponseEntity<PagedModel<EntityModel<JogoDTO>>> retornaTodosOsJogos(@RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
                                                                                @RequestParam(value = "limite", defaultValue = "12") Integer limite,
                                                                                @RequestParam(value = "direcao", defaultValue = "asc") String direcao){
