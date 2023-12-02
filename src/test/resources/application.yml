@@ -28,4 +28,4 @@ springdoc:
 cors:
   origins: http://localhost:8080,http://ronyelison.com.br,http://127.0.0.1:5500
 file:
-  upload-dir: /Users/ronye/Desktop/Java/UploadDir
+  upload-dir: /home/runner/work/Locadora-de-Jogos/Users/ronye/Desktop/Java/UploadDir
