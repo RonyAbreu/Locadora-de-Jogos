@@ -12,3 +12,7 @@
 - Spring Security !
 - JWT !
 - CORS !
+- Docker !
+- Testes de Integração !
+- Busca Paginada !
+- Upload e Download !
