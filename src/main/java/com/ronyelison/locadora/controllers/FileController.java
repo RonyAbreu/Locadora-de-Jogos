@@ -15,11 +15,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/v1/file")
 @Tag(name = "File Endpoint")
 public class FileController {
+    private final Logger logger = Logger.getLogger(FileController.class.getName());
     private FileStorageService fileStorageService;
 
     @Autowired
@@ -29,6 +31,7 @@ public class FileController {
 
     @PostMapping("/upload")
     public UploadFileResponseDTO uploadFile(@RequestParam("file") MultipartFile file){
+        logger.info("Fazendo Upload de um arquivo...");
         String filename = fileStorageService.storeFile(file);
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/api/v1/file/download/").path(filename).toUriString();
@@ -37,11 +40,13 @@ public class FileController {
 
     @PostMapping("/uploadMultipleFiles")
     public List<UploadFileResponseDTO> uploadMultipleFile(@RequestParam("files") MultipartFile [] files){
+        logger.info("Fazendo Upload de vários arquivos...");
         return Arrays.stream(files).map(this::uploadFile).toList();
     }
 
     @GetMapping("/download/{filename:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename, HttpServletRequest request){
+        logger.info("Fazendo Download de um arquivo...");
         Resource resource = fileStorageService.loadFileAsResource(filename);
         String contentType = fileStorageService.getContentType(request,resource);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))

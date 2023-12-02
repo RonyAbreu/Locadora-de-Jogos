@@ -9,17 +9,20 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Autenticação", description = "Endpoint para usuários autenticados")
 public class UsuarioAutenticadoController {
+    private final Logger logger = Logger.getLogger(UsuarioAutenticadoController.class.getName());
     private UsuarioAutenticadoService autenticadoService;
-
     @Autowired
     public UsuarioAutenticadoController(UsuarioAutenticadoService autenticadoService) {
         this.autenticadoService = autenticadoService;
@@ -34,6 +37,7 @@ public class UsuarioAutenticadoController {
             })
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Usuario> retornaUsuarioPeloId(@PathVariable Long id){
+        logger.info("Retornando usuário...");
         var usuario = autenticadoService.retornaUsuarioPeloId(id);
         return ResponseEntity.ok(usuario);
     }
@@ -49,6 +53,7 @@ public class UsuarioAutenticadoController {
     @PutMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<UsuarioDTO> atualizaUsuario(@PathVariable Long id, @RequestBody UsuarioAtualizado usuarioAtualizado){
+        logger.info("Atualizando usuário...");
         var usuario = autenticadoService.atualizaUsuario(id,usuarioAtualizado);
         return ResponseEntity.ok(usuario);
     }
@@ -62,6 +67,7 @@ public class UsuarioAutenticadoController {
             })
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> removeUsuarioPeloId(@PathVariable Long id){
+        logger.info("Removendo usuário...");
         autenticadoService.removeUsuarioPeloId(id);
         return ResponseEntity.noContent().build();
     }

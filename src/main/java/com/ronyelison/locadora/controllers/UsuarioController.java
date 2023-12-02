@@ -16,10 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/usuario")
 @Tag(name = "Usuário", description = "Endpoint de Usuários")
 public class UsuarioController {
+    private final Logger logger = Logger.getLogger(UsuarioController.class.getName());
     private UsuarioService service;
 
     @Autowired
@@ -37,6 +40,7 @@ public class UsuarioController {
     @PostMapping(value = "/registro",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<UsuarioDTO> cadastraUsuario(@RequestBody @Valid UsuarioDeRegistroDTO usuarioDeRegistro){
+        logger.info("Cadastrando usuário...");
         var usuario = service.cadastraUsuario(usuarioDeRegistro);
         return ResponseEntity.ok(usuario);
     }
@@ -50,6 +54,7 @@ public class UsuarioController {
     @PostMapping(value = "/login",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<TokenDTO> login(@RequestBody @Valid UsuarioDeLogin usuarioDeLogin){
+        logger.info("Logando usuário...");
         var token = service.login(usuarioDeLogin);
         return ResponseEntity.ok(token);
     }

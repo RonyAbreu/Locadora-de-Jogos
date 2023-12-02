@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.LoginException;
+import java.util.logging.Logger;
 
 @Service
 public class UsuarioService {
@@ -34,7 +35,7 @@ public class UsuarioService {
     }
 
     public UsuarioDTO cadastraUsuario(UsuarioDeRegistroDTO usuarioDeRegistro){
-        Usuario usuarioRetornado = (Usuario) usuarioRepository.findByEmail(usuarioDeRegistro.getEmail());
+        Usuario usuarioRetornado = usuarioRepository.findByEmail(usuarioDeRegistro.getEmail());
         if (usuarioRetornado != null){
             throw new UsuarioJaExisteException("Esse usuário já existe!");
         }

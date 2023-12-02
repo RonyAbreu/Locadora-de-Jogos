@@ -19,10 +19,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/api/v1/jogos")
 @Tag(name = "Jogo", description = "Locadora de Jogos")
 public class JogoController {
+    private Logger logger = Logger.getLogger(JogoController.class.getName());
     private JogoService service;
 
     @Autowired
@@ -41,6 +44,7 @@ public class JogoController {
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<JogoDTO> adicionarJogo(@RequestBody @Valid JogoDTO jogoDTO){
+        logger.info("Adicionando jogo...");
         var jogo = service.adicionarJogo(jogoDTO);
         return ResponseEntity.ok(jogo);
     }
@@ -56,6 +60,7 @@ public class JogoController {
     public ResponseEntity<PagedModel<EntityModel<JogoDTO>>> retornaTodosOsJogos(@RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
                                                                                @RequestParam(value = "limite", defaultValue = "12") Integer limite,
                                                                                @RequestParam(value = "direcao", defaultValue = "asc") String direcao){
+        logger.info("Retornando todos os jogos...");
         var direcaoDaPagina = "desc".equalsIgnoreCase(direcao) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(pagina, limite, Sort.by(direcaoDaPagina, "nome"));
         var listaDeJogos = service.retornarTodosOsJogos(pageable);
@@ -71,6 +76,7 @@ public class JogoController {
             })
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<JogoDTO> retornaJogoPeloId(@PathVariable Long id){
+        logger.info("Retornando um jogo...");
         var jogoRetornado = service.retornaJogoPeloId(id);
         return ResponseEntity.ok(jogoRetornado);
     }
@@ -84,6 +90,7 @@ public class JogoController {
             })
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> removeJogoPeloId(@PathVariable Long id){
+        logger.info("Removendo um jogo...");
         service.removeJogoPeloId(id);
         return ResponseEntity.noContent().build();
     }
@@ -99,6 +106,7 @@ public class JogoController {
     @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<JogoDTO> atualizaJogo(@PathVariable Long id, @RequestBody @Valid JogoDTO jogoDTO){
+        logger.info("Atualizando um jogo...");
         var jogoAtualizado = service.atualizaJogo(id,jogoDTO);
         return ResponseEntity.ok(jogoAtualizado);
     }
@@ -114,6 +122,7 @@ public class JogoController {
     @GetMapping(value = "/nome/{nomeJogo}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PagedModel<EntityModel<JogoDTO>>> retornaJogosPeloNome(@PathVariable String nomeJogo, @RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
                                                               @RequestParam(value = "limite", defaultValue = "12") Integer limite, @RequestParam(value = "ordem", defaultValue = "asc") String ordem){
+        logger.info("Retornando um jogo pelo nome...");
         var ordenacao = "desc".equalsIgnoreCase(ordem) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(pagina,limite, Sort.by(ordenacao,"nome"));
         var jogoRetornado = service.retornaJogosPeloNome(nomeJogo,pageable);
@@ -129,6 +138,7 @@ public class JogoController {
             })
     @PatchMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<JogoDTO> desativaJogoPeloId(@PathVariable Long id){
+        logger.info("Desativando um jogo...");
         var jogoRetornado = service.desativaJogo(id);
         return ResponseEntity.ok(jogoRetornado);
     }
