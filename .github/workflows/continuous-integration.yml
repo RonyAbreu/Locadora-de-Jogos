@@ -24,7 +24,7 @@ jobs:
         cache: maven
         
     - name: Build Application Jar
-      working-directory: ./Locadora-de-Jogos
+      working-directory: ./
       run: mvn clean package -DskipTests
 
     - name: Docker Compose Build
