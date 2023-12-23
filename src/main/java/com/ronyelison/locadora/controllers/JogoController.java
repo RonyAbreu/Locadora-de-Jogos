@@ -2,6 +2,7 @@ package com.ronyelison.locadora.controllers;
 
 import com.ronyelison.locadora.dto.JogoDTO;
 import com.ronyelison.locadora.services.JogoService;
+import com.ronyelison.locadora.services.exceptions.TokenException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;

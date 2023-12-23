@@ -57,7 +57,7 @@ public class ErroControllerHandler {
     @ExceptionHandler(TokenException.class)
     public ResponseEntity<RespostaDeErro> tokenInvalidoErro(TokenException exception, HttpServletRequest request){
         HttpStatus status = HttpStatus.FORBIDDEN;
-        RespostaDeErro respostaDeErro = new RespostaDeErro(Instant.now(),status.value(),exception.getMessage(),request.getRequestURI());
+        RespostaDeErro respostaDeErro = new RespostaDeErro(Instant.now(),status.value(),"Token inválido",request.getRequestURI());
         return ResponseEntity.status(status).body(respostaDeErro);
     }
 }
